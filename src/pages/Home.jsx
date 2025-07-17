@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCourses } from "../features/course/courseSlice";
 import CourseCard from "../components/CourseCard";
@@ -7,12 +7,19 @@ import Pagination from "../components/Pagination";
 const Home = () => {
   const { data, loading, error } = useSelector((state) => state.courses);
   const dispatch = useDispatch();
+  const searchRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(1);
   const coursePerPage = 6;
 
   useEffect(() => {
     dispatch(fetchCourses());
   }, [dispatch]);
+
+  useEffect(() => {
+    if(searchRef.current) {
+      searchRef.current.focus();
+    }
+  }, [])
 
   const totalPages = Math.ceil(data.length / coursePerPage);
   const startIndex = (currentPage - 1) * coursePerPage;
@@ -31,7 +38,14 @@ const Home = () => {
       {loading && <p className="my-2">Loading...</p>}
       {error && <p className="text-red-500 my-2">{error}</p>}
 
-      
+      {/* <div>
+        <input
+          ref={searchRef}
+          type="search"
+          placeholder="Search..."
+          className="border rounded p-2 w-[400px] my-3"
+        />
+      </div> */}
 
       <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {currentItems.map((course) => (

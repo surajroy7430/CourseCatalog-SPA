@@ -9,14 +9,12 @@ const CourseCard = ({ course }) => {
   const isFavorite = favorites.includes(course.id);
 
   const toggleFavorite = useCallback(() => {
-    () => {
-      if (isFavorite) {
-        dispatch(remove(course.id));
-      } else {
-        dispatch(add(course.id));
-      }
-    };
-  }, [dispatch, isFavorite, add, remove]);
+    if (isFavorite) {
+      dispatch(remove(course.id));
+    } else {
+      dispatch(add(course.id));
+    }
+  }, [dispatch, isFavorite, course.id]);
 
   return (
     <div className="border p-2 rounded-md hover:shadow-lg">
@@ -42,7 +40,7 @@ const CourseCard = ({ course }) => {
               isFavorite ? "bg-red-500" : "bg-green-500"
             }`}
           >
-            {isFavorite ? "Remove from favorite" : "Add to favorite"}
+            {isFavorite ? "Remove" : "Add to favorite"}
           </button>
         </div>
       </div>
